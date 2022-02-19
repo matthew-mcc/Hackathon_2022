@@ -1,5 +1,5 @@
 import mysql.connector
-import pandas as pd;
+import pandas as pd
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -17,3 +17,5 @@ myresult = mycursor.fetchall()
 employee_df = pd.read_sql("SELECT * FROM employee", con=mydb, index_col="Employee_ID")
 
 print(employee_df)
+
+employee_df.to_csv("employees.csv")
