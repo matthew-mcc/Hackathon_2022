@@ -11,7 +11,6 @@ def geeks_view(request):
     # return response
     group_info = {0: [('John', 'Smith', '198 Cougar Plateau Way SW', 1), ('Jane', 'Doe', '147 Prominence Heights SW', 0), ('Gus', 'Bravo', '154 Aspen Summit Cl SW', 0), ('Vanessa', 'Chen', '317 Wentworth Pl SW', 0), ('Carson', 'Eades', '25 Wentworth Terrace SW', 0)], 1: [('Matthew', 'McConnell', '70 Elkton Way SW', 0), ('Kevin', 'Van', '187 Tremblant Way SW', 1), ('Josh', 'McConnell', '147 Strathcona Close SW', 0), ('Brendan', 'Arthurs', '24 Aspen Hills Close SW', 0), ('Max', 'Brown', '131 Christie Knoll Point SW', 0)], 2: [('Kenny', 'Jeon', '25 Wentworth Terrace SW', 1)]}
     
-    return render(request, "home.html", {"test_dict":json.dumps(test_dict), "test_group":json.dumps(test_group), "tag_value":json.dumps(tag_value)})
     return render(request, "home.html", {"test_dict":json.dumps(test_dict), "test_group":json.dumps(test_group), "tag_value":json.dumps(tag_value), "group_info":json.dumps(group_info)})
 
 
