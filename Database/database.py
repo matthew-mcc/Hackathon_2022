@@ -44,7 +44,7 @@ def insert_employee_db(id, fname, lname, address, city, password, max_seats):
   # Employee Table Query
   employee_query_template = Template(
           """INSERT INTO employee
-          VALUES($id, \"$fname\", \"$lname\", \"$address\", \"$city\", \"$password\", $admin, $rides, $drives, $rank)"""
+          VALUES($id, \"$fname\", \"$lname\", \"$address\", \"$city\", \"$password\", $admin, $rides, $drives)"""
   )
   employee_query = employee_query_template.substitute(
     id=id,
@@ -55,8 +55,8 @@ def insert_employee_db(id, fname, lname, address, city, password, max_seats):
     password=password,
     admin=0,
     rides=0,
-    drives=0,
-    rank=0)
+    drives=0
+    )
 
   # Driver Query
   driver_query_template = Template(
@@ -160,3 +160,24 @@ def change_drivers():
         update_to_driver(label + 1)
       else:
         update_to_driver(0)
+
+# Returns a list of first name, last name, and address of employee in group with group_id number
+def group_to_list(group_id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
+  query_template = Template(
+    """SELECT First_Name, Last_Name, Address FROM employee, carpool_groups WHERE carpool_groups.Group_id = ($group_id) AND carpool_groups.fk_Employee_ID = employee.Employee_ID"""
+    )
+  query = query_template.substitute(
+      group_id = group_id
+    )
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+
+  myresult = mycursor.fetchall()
+  
+  return myresult
