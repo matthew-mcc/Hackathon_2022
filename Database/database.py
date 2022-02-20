@@ -1,6 +1,7 @@
 import mysql.connector
 import pandas as pd
 from mysql.connector import Error
+from string import Template
 
 def database_to_dic():
   mydb = mysql.connector.connect(
@@ -12,9 +13,9 @@ def database_to_dic():
 
   mycursor = mydb.cursor()
 
-  mycursor.execute("SELECT * FROM employee")
+  # mycursor.execute("SELECT * FROM employee")
 
-  myresult = mycursor.fetchall()
+  # myresult = mycursor.fetchall()
 
   employee_df = pd.read_sql("SELECT * FROM employee", con=mydb, index_col="Employee_ID")
   carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb, index_col="fk_Employee_ID")
@@ -43,15 +44,38 @@ def database_to_dic():
 # company_df.to_csv("company.csv")
 
 
-# def insert_employee_db(id, fname, lname, address, city, password):
-#     query = "INSERT INTO employee(Employee_ID, First_Name, Last_Name, Address, City, Cannot_Drive, Password, " \
-#             "Admin, Driver_ID, Passenger_Rides, Driver_Rides, Rank) " \
-#             "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-#     args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
-#     print("args: ", args)
-#     mycursor = mydb.cursor()
-#     mycursor.execute(query, args)
-#     mydb.commit()
+def insert_employee_db(id, fname, lname, address, city, password):
+    mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
+    query_template = Template(
+            """INSERT INTO employee
+            VALUES($id, \"$fname\", \"$lname\", \"$address\", \"$city\", $drive, \"$password\", $admin, $driver_id, $rides, $drives, $rank)"""
+    )
+    query = query_template.substitute(
+      id=id,
+      fname=fname,
+      lname=lname,
+      address=address,
+      city=city,
+      drive=0,
+      password=password,
+      admin=0,
+      driver_id=8,
+      rides=0,
+      drives=0,
+      rank=0)
+    # query = "INSERT INTO employee(Employee_ID, First_Name, Last_Name, Address, City, Cannot_Drive, Password, " \
+    #         "Admin, Driver_ID, Passenger_Rides, Driver_Rides, Rank) " \
+    #         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
+    print("args: ", args)
+    mycursor = mydb.cursor()
+    mycursor.execute(query)
+    mydb.commit()
 #     # try:
 #     #     # db_config = read_db_config()
 #     #     # conn = MySQLConnection(**db_config)
@@ -72,4 +96,4 @@ def database_to_dic():
 #     #     mycursor.close()
 #     #     mydb.close()
 
-# insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10")
+insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10")
