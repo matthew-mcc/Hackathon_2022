@@ -197,21 +197,24 @@
 
       </style>
       </head>
-      <body>
-        <form method="post"> 
-          {% csrf_token %} 
-        <button id="refresh" class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge"></i></button>
-        </form> 
+        <body>
+        <div>
+        <form method = "post">
+          {% csrf_token %}
+        <button type = "submit" id="refresh" class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge"></i></button>
+      </form>
 
+      </div>
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         <a href="#">Groups</a>
-      
+
       </div>
       
       <button class="openbtn w3-button w3-black" onclick="openNav()">View Groups</button>  
       
       <script>
+
       function openNav() {
         document.getElementById("mySidepanel").style.width = "250px";
       }
@@ -220,7 +223,6 @@
         document.getElementById("mySidepanel").style.width = "0";
       }
       </script>
-         
       </body>
   </body>
 {% else %}
@@ -266,7 +268,7 @@
     <div class="w3-card-4 w3-animate-bottom" >
       <header class="w3-container w3-light-green"> 
           <div class="w3-center w3-xxxlarge w3-bold">
-          <h1>COMPANY CARPOOL</h1>
+          <h1>GO-GO ECO!</h1>
           </div>
       </header>
       <div class="w3-container w3-black">
@@ -277,9 +279,7 @@
         that are commuting to the same workplace destination. We determined this was a safe method of
         transport as employees are typically screened before employment and serves as a fun way to
         meet others on the way to work.
-        My First Name is {{ first_name }}.
         <br/>
-        My Last Name is  {{ last_name }}.
       </p>
     </div>
   </div>
