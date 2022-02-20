@@ -102,10 +102,6 @@
       
     }  
 
-    
-
-    
-    
     // for(let i = 0; i < my_list.length; i ++){
     //   new mapboxgl.Marker().setLngLat([my_list[i][1], my_list[i][0]]).addTo(map);
     // }
@@ -176,15 +172,13 @@
         border: none;
       }
 
-      .refbutton:hover {
-        background-color:#444;
-      }
-
       </style>
       </head>
       <body>
-      
-        <button class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge" onclick=""></i></button>
+        <form method="post"> 
+          {% csrf_token %} 
+        <button type="submit" name="refresh" class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge"></i></button>
+      </form> 
 
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
