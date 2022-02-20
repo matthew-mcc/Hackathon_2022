@@ -25,3 +25,7 @@ for keys, values in group_list.items():
 print("The location of each individual in Lat-Lon is:")
 for key in location_data:
     print(key, location_data[key])
+
+
+print(location_data)
+print(group_list)

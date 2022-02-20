@@ -1,4 +1,5 @@
 from re import TEMPLATE
+from tokenize import group
 import mysql.connector
 import pandas as pd
 from string import Template
@@ -170,7 +171,7 @@ def group_to_list(group_id):
       password="vanessa",
       database='car_pool_planner')
   query_template = Template(
-    """SELECT First_Name, Last_Name, Address FROM employee, carpool_groups WHERE carpool_groups.Group_id = ($group_id) AND carpool_groups.fk_Employee_ID = employee.Employee_ID"""
+    """SELECT First_Name, Last_Name, Address, Group_Driver FROM employee, carpool_groups WHERE carpool_groups.Group_id = ($group_id) AND carpool_groups.fk_Employee_ID = employee.Employee_ID"""
     )
   query = query_template.substitute(
       group_id = group_id
@@ -201,6 +202,9 @@ def remove_user(id: int):
 
   mydb.commit()
 
+result = group_to_list(0)
+for x in result:
+  print(x)
 
 # Returns a list with first name, last name, and address as list inputs
 def get_fname_lname_address(id: int):
