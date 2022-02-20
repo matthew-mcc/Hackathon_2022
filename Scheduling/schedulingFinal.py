@@ -142,7 +142,9 @@ def get_ride_order(input_dataDriver, input_dataPassengers, workplaceLocation):
     output_dictionary = dict(zip(driver_list, final_groups))
    # print(output_dictionary)
 
-    return output_dictionary, passenger_data_for_workplace
+    all_latLon = {**passenger_data_for_workplace, **driver_latLon}
+
+    return output_dictionary, all_latLon
 
             
     #print("final order", driver_and_group)
