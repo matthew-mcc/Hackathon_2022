@@ -168,7 +168,7 @@ def remove_user(id: int):
       password="vanessa",
       database='car_pool_planner'
   )
-  # employee_query_template = TEMPLATE("DELETE FROM employee WHERE Employee_ID=$id")
+  
   employee_query = f"DELETE FROM employee WHERE Employee_ID={id}"
   driver_query = f"DELETE FROM driver WHERE fk_Employee_ID={id}"
   carpool_groups = f"DELETE FROM carpool_groups WHERE fk_Employee_ID={id}"
