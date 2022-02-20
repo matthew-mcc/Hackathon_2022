@@ -62,9 +62,51 @@
     center: [-114.051722, 51.048886, ],
     zoom: 11.5,
     });
-    for(let i = 0; i < 5; i ++){
-      new mapboxgl.Marker().setLngLat([-114.051+(i/100), 51.048]).addTo(map);
+   
+    //var my_list = {{test_list}};
+    // var my_dict = {{test_list}};
+    // window.alert(my_dict);
+
+    names = {{test_dict|safe}};
+    for(const ele in names){
+     // new mapboxgl.Marker().setLngLat([names[ele][1], names[ele][0]]).addTo(map);
     }
+    const colors = ['#FF33E0', '#FFAE33', '#338EFF', '#FFFFFF'];
+    var my_list = {{test_group|safe}};
+
+    i = 0;
+    for(const ele in my_list){
+      //window.alert(ele);
+
+      //ele = driver num
+      //
+      current_color = colors[i];
+     new mapboxgl.Marker({"color":current_color}).setLngLat([names[ele][1], names[ele][0]]).addTo(map);
+     i = i + 1; //creates drivers
+      for(const ele2 in my_list[ele]){
+        //ele2 = passenger num in tup
+        //window.alert(names[ele2]);
+        //x, y = names[ele2]
+
+        
+        
+        current_passenger_id = my_list[ele][ele2];
+        new mapboxgl.Marker({"color":current_color}).setLngLat([names[current_passenger_id][1], names[current_passenger_id][0]]).addTo(map);
+        //window.alert(my_list[ele][ele2]);
+      }
+      
+      
+    }  
+
+    
+
+    
+    
+    // for(let i = 0; i < my_list.length; i ++){
+    //   new mapboxgl.Marker().setLngLat([my_list[i][1], my_list[i][0]]).addTo(map);
+    // }
+    //   new mapboxgl.Marker().setLngLat([-114.051+(i/100), 51.048]).addTo(map);
+    // }
     </script>
 
     <!-- Side panels-->
@@ -132,7 +174,7 @@
      
         The names are:
         
-        <p>{{some_string}}</p>
+        <p>{{test_list}}</p>
       
       </div>
       
