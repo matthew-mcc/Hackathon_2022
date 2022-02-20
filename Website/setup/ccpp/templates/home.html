@@ -74,6 +74,10 @@
     const colors = ['#FF33E0', '#FFAE33', '#338EFF', '#FFFFFF'];
     var my_list = {{test_group|safe}};
 
+
+
+    //making company marker
+    new mapboxgl.Marker({"color":'#00FFA8', 'scale':1.5}).setLngLat([-114.14069500180989,51.07771210980663]).addTo(map);
     i = 0;
     for(const ele in my_list){
       //window.alert(ele);
@@ -81,7 +85,7 @@
       //ele = driver num
       //
       current_color = colors[i];
-     new mapboxgl.Marker({"color":current_color}).setLngLat([names[ele][1], names[ele][0]]).addTo(map);
+     new mapboxgl.Marker({"color":current_color, "scale": 1.2}).setLngLat([names[ele][1], names[ele][0]]).addTo(map);
      i = i + 1; //creates drivers
       for(const ele2 in my_list[ele]){
         //ele2 = passenger num in tup
