@@ -11,15 +11,5 @@ def geeks_view(request):
     return render(request, "home.html", context)
 
 def test1(request):
-    context = {
-        "first_name" : "kev",
-        "last_name"  : "v",
-    }
-    return render(request, "home.html", context)
-    
-def test2(request):
-    context = {
-        "first_name" : "kenny",
-        "last_name"  : "j",
-    }
-    return render(request, "home.html", context)
+    print("refresh")
+    return render(request, "home.html")

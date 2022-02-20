@@ -113,8 +113,6 @@
         position: relative;
         font-size: 20px;
         cursor: pointer;
-        background-color: #111;
-        color: white;
         padding: 10px 15px;
         border: none;
       }
@@ -128,18 +126,19 @@
         position: relative;
         font-size: 20px;
         cursor: pointer;
-        background-color: #111;
-        color: white;
         padding: 10px 15px;
         border: none;
       }
+
+      .refbutton:hover {
+        background-color:#444;
+      }
+
       </style>
       </head>
       <body>
       
-      <div id="ref" class="refbutton">
-        <i class="fa fa-refresh w3-spin w3-xlarge w3-center"></i>
-      </div>
+        <button class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge" onclick=""></i></button>
 
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
@@ -151,7 +150,7 @@
       
       </div>
       
-      <button class="openbtn" onclick="openNav()">View Groups</button>  
+      <button class="openbtn w3-button w3-black" onclick="openNav()">View Groups</button>  
       
       <script>
       function openNav() {
