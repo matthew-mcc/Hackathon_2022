@@ -125,10 +125,6 @@
       
     }  
 
-    
-
-    
-    
     // for(let i = 0; i < my_list.length; i ++){
     //   new mapboxgl.Marker().setLngLat([my_list[i][1], my_list[i][0]]).addTo(map);
     // }
@@ -182,8 +178,6 @@
         position: relative;
         font-size: 20px;
         cursor: pointer;
-        background-color: #111;
-        color: white;
         padding: 10px 15px;
         border: none;
       }
@@ -197,18 +191,17 @@
         position: relative;
         font-size: 20px;
         cursor: pointer;
-        background-color: #111;
-        color: white;
         padding: 10px 15px;
         border: none;
       }
+
       </style>
       </head>
       <body>
-      
-      <div id="ref" class="refbutton">
-        <i class="fa fa-refresh w3-spin w3-xlarge w3-center"></i>
-      </div>
+        <form method="post"> 
+          {% csrf_token %} 
+        <button type="submit" name="refresh" class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge"></i></button>
+      </form> 
 
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
@@ -220,7 +213,7 @@
       
       </div>
       
-      <button class="openbtn" onclick="openNav()">View Groups</button>  
+      <button class="openbtn w3-button w3-black" onclick="openNav()">View Groups</button>  
       
       <script>
       function openNav() {

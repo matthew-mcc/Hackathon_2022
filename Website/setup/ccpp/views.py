@@ -4,6 +4,7 @@ from django.template import loader
 import json
 
 def geeks_view(request):
+
     # create a dictionary
     # context = {
     #     "first_name" : "Naveen",
