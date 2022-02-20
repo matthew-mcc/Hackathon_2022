@@ -69,7 +69,7 @@ def insert_employee_db(id, fname, lname, address, city, password, max_seats):
   # Driver Query
   driver_query_template = Template(
           """INSERT INTO driver
-          VALUES($id, $max_seats, $max_distance_km"""
+          VALUES($id, $max_seats, $max_distance_km)"""
   )
   driver_query = driver_query_template.substitute(
     id=id,
@@ -80,11 +80,11 @@ def insert_employee_db(id, fname, lname, address, city, password, max_seats):
   # Carpool Query
   carpool_query_template = Template(
             """INSERT INTO carpool_groups
-            VALUES($id, $groupID, $driver"""
+            VALUES($group_id, $id, $driver)"""
   )
   carpool_query = carpool_query_template.substitute(
+    group_id=0,
     id=id,
-    max_seats=max_seats,
     driver=0
   )
 
@@ -159,7 +159,7 @@ def update_group_id(id, group_id):
   mycursor.execute(query)
   mydb.commit()
 
-# insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10")
+# insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10", 6)
 # update_to_driver(1)
 # update_to_passenger(0)
 # update_group_id(0, 0)
