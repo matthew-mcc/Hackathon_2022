@@ -62,6 +62,9 @@
     center: [-114.051722, 51.048886, ],
     zoom: 11.5,
     });
+    for(let i = 0; i < 5; i ++){
+    new mapboxgl.Marker().setLngLat([-114.051+(i/100), 51.048]).addTo(map);
+    }
     </script>
 
     <!-- Side panels-->
