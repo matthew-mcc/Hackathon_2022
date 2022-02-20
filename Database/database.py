@@ -1,3 +1,5 @@
+from cmath import inf
+from distutils.log import info
 from re import TEMPLATE
 from tokenize import group
 import mysql.connector
@@ -202,10 +204,6 @@ def remove_user(id: int):
 
   mydb.commit()
 
-result = group_to_list(0)
-for x in result:
-  print(x)
-
 # Returns a list with first name, last name, and address as list inputs
 def get_fname_lname_address(id: int):
   mydb = mysql.connector.connect(
@@ -218,12 +216,34 @@ def get_fname_lname_address(id: int):
 
   query = f"SELECT First_Name, Last_Name, Address FROM employee WHERE Employee_ID={id}"
 
-  mycursor(query)
+  mycursor.execute(query)
 
   myresult = mycursor.fetchall()
 
-  fname = myresult[0]
-  lname = myresult[1]
-  address = myresult[2]
+  fname = myresult[0][0]
+  lname = myresult[0][1]
+  address = myresult[0][2]
 
   return fname, lname, address
+
+def get_info_dict ():
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database="car_pool_planner"
+  )
+  mycursor = mydb.cursor()
+
+  query = "SELECT COUNT(*) FROM employee"
+
+  mycursor.execute(query)
+  myresult = mycursor.fetchall()[0][0]
+
+  all_info_dict = {}
+
+  for i in range(0, myresult):
+    info = get_fname_lname_address(i)
+    all_info_dict[i] = info
+
+  return all_info_dict
