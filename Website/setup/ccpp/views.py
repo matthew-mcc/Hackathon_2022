@@ -10,8 +10,16 @@ def geeks_view(request):
     # return response
     return render(request, "home.html", context)
 
-def send_data(request):
-    context = {}
-    context['somestring'] = "this is some string"
-
+def test1(request):
+    context = {
+        "first_name" : "kev",
+        "last_name"  : "v",
+    }
+    return render(request, "home.html", context)
+    
+def test2(request):
+    context = {
+        "first_name" : "kenny",
+        "last_name"  : "j",
+    }
     return render(request, "home.html", context)
