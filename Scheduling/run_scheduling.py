@@ -1,11 +1,11 @@
 import sys
 sys.path.append(R"C:\Users\vanes\eclipse-workspace\ENSF480FinalProject\src\Hackathon_2022")
 from schedulingFinal import get_ride_order
-from Database.database import database_to_dic, update_group_id
+from Database.database import database_to_dict, update_group_id
 
 
 
-group_drivers_dict, non_drivers_dict = database_to_dic()
+group_drivers_dict, non_drivers_dict = database_to_dict()
 
 wp = {
     "UniversityOfCalgary": "2500 University Dr NW, Calgary"}
