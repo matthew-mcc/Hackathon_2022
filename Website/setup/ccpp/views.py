@@ -1,4 +1,3 @@
-from pickle import NONE
 from django.shortcuts import render
 from django.template import loader
 
@@ -10,7 +9,6 @@ def geeks_view(request):
     }
     # return response
     return render(request, "home.html", context)
-
 
 def send_data(request):
     context = {}

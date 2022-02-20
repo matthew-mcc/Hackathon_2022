@@ -122,21 +122,33 @@
       .openbtn:hover {
         background-color:#444;
       }
+
+      .refbutton{
+        float: right;
+        position: relative;
+        font-size: 20px;
+        cursor: pointer;
+        background-color: #111;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+      }
       </style>
       </head>
       <body>
       
+      <div id="ref" class="refbutton">
+        <i class="fa fa-refresh w3-spin w3-xlarge w3-center"></i>
+
+      </div>
+
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         <a href="#">Groups</a>
-     
-        The names are:
-        
-        <p>{{some_string}}</p>
       
       </div>
       
-      <button class="openbtn" onclick="openNav()">View Groups</button>  
+      <button onclick = "" class="openbtn" onclick="openNav()">View Groups</button>  
       
       <script>
       function openNav() {
