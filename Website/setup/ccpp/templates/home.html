@@ -62,6 +62,9 @@
     center: [-114.051722, 51.048886, ],
     zoom: 11.5,
     });
+    for(let i = 0; i < 5; i ++){
+    new mapboxgl.Marker().setLngLat([-114.051+(i/100), 51.048]).addTo(map);
+    }
     </script>
 
     <!-- Side panels-->
@@ -145,6 +148,12 @@
   </body>
 {% else %}
 
+<style>
+  div.mainbox {
+  max-width: 65%;
+  margin: auto;
+}
+</style>
 <body>
     <header class="w3-container w3-theme w3-padding" id="myHeader"> 
     <div class="w3-bar w3-black w3-card">
@@ -154,29 +163,48 @@
     <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</button>
     </header>
     </div>    
-
-    <div class="w3-center w3-xxxlarge w3-bold">
-    <h1>COMPANY CARPOOL</h1>
-    <h4 class="w3-animate-bottom">Welcome to our homepage</h4>
-    </div>
 <!-- Modal box for contact info-->
-    <div id="id01" class="w3-modal">
-      <div class="w3-modal-content w3-card-4">
-        <header class="w3-container w3-light-green"> 
-          <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-circle w3-display-topright w3-hover-red">&times;</span>
-          <h2>Light Mode Bad</h2>
-        </header>
-        <div class="w3-container w3-black">
-          <p style="font-size:160%"><b>Contact Info:</b></p>
-          <p><b>Kevin Van: </b>vankevin58@gmail.com</p>
-          <p><b>Gustavo Bravo: </b>vankevin58@gmail.com</p>
-          <p><b>Matthew Mcconnell: </b>vankevin58@gmail.com</p>
-          <p><b>Kenny Jeon: </b>vankevin58@gmail.com</p>
-          <p><b>Vanessa Chen: </b>vankevin58@gmail.com</p>
-        </div>
-      </div>
+<div id="id01" class="w3-modal">
+  <div class="w3-modal-content w3-card-4">
+    <header class="w3-container w3-light-green"> 
+      <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-circle w3-display-topright w3-hover-red">&times;</span>
+      <h2>Light Mode Bad</h2>
+    </header>
+    <div class="w3-container w3-black">
+      <p style="font-size:160%"><b>Contact Info:</b></p>
+      <p><b>Kevin Van: </b>vankevin58@gmail.com</p>
+      <p><b>Gustavo Bravo: </b>vankevin58@gmail.com</p>
+      <p><b>Matthew Mcconnell: </b>vankevin58@gmail.com</p>
+      <p><b>Kenny Jeon: </b>vankevin58@gmail.com</p>
+      <p><b>Vanessa Chen: </b>vankevin58@gmail.com</p>
     </div>
   </div>
+</div>
+<!-- Spaces-->
+<br>
+<br>
+<br>
+
+  <div class="mainbox"> 
+    <div class="w3-card-4 w3-animate-bottom" >
+      <header class="w3-container w3-light-green"> 
+          <div class="w3-center w3-xxxlarge w3-bold">
+          <h1>COMPANY CARPOOL</h1>
+          </div>
+      </header>
+      <div class="w3-container w3-black">
+      <div class="w3-black w3-card-4">
+      <p>This website is utilized to organize car pool parties among coworkers within the same company. 
+        Our idea is to minimize carbon emissions by encouraging the use of shared modes 
+        of transporation. The concept is to have companies deploy our developed tool to their employees
+        that are commuting to the same workplace destination. We determined this was a safe method of
+        transport as employees are typically screened before employment and serves as a fun way to
+        meet others on the way to work.
+      </p>
+    </div>
+  </div>
+</div>
+
 <!-- Script for closing modal when clicking outside box-->
 <script>
   var modal = document.getElementById('id01');
