@@ -22,3 +22,14 @@ non_drivers_dict = dict(zip(
 
 group_list, location_data = get_ride_order(group_drivers_dict, non_drivers_dict, workplace_data = {
     "UniversityOfCalgary": "2500 University Dr NW, Calgary"})
+
+
+
+
+for keys, values in groups_list.items():
+    print(keys, "drives", values)
+
+
+print("The location of each individual in Lat-Lon is:")
+for key in location_data:
+    print(key, location_data[key])

@@ -155,38 +155,37 @@ def get_ride_order(input_dataDriver, input_dataPassengers, workplaceLocation):
 
 
 
+# driver_data = {
+#     "Jimbo": ("379 Springborough Way SW, Calgary", 4),
+#     "Bimbo": ("198 Cougar Plateau Way SW, Calgary", 3),
+#     "Dimbo": ("147 Prominence Heights SW, Calgary", 2),
 
-driver_data = {
-    "Jimbo": ("379 Springborough Way SW, Calgary", 4),
-    "Bimbo": ("198 Cougar Plateau Way SW, Calgary", 3),
-    "Dimbo": ("147 Prominence Heights SW, Calgary", 2),
+# }
 
-}
+# passenger_data = {
+#     "Josh": "317 Wentworth Place SW, Calgary",
+#     "Matthew": "70 Elkton Way SW, Calgary",
+#     "Kevin": "187 Tremblant Way SW, Calgary",
+#     "Tus": "25 Wentworth Terrace SW, Calgary",
+#     "Gus": "114 Warwick Drive SW, Calgary",
+#     "Kenny": "315 Coach Ride Rise SW, Calgary",
+#     "Nate": "417 Patina Pl SW, Calgary",
+#     "Erwin": "843 77 Street SW, Calgary",
+#     "Brendan": "135 Discovery Ridge Way SW, Calgary",
 
-passenger_data = {
-    "Josh": "317 Wentworth Place SW, Calgary",
-    "Matthew": "70 Elkton Way SW, Calgary",
-    "Kevin": "187 Tremblant Way SW, Calgary",
-    "Tus": "25 Wentworth Terrace SW, Calgary",
-    "Gus": "114 Warwick Drive SW, Calgary",
-    "Kenny": "315 Coach Ride Rise SW, Calgary",
-    "Nate": "417 Patina Pl SW, Calgary",
-    "Erwin": "843 77 Street SW, Calgary",
-    "Brendan": "135 Discovery Ridge Way SW, Calgary",
+# }
 
-}
+# workplace_data = {
+#     "UniversityOfCalgary": "2500 University Dr NW, Calgary",
+# }
 
-workplace_data = {
-    "UniversityOfCalgary": "2500 University Dr NW, Calgary",
-}
-
-groups, data = get_ride_order(driver_data, passenger_data, workplace_data)
-
-
-for keys, values in groups.items():
-    print(keys, "drives", values)
+# groups, data = get_ride_order(driver_data, passenger_data, workplace_data)
 
 
-print("The location of each individual in Lat-Lon is:")
-for key in data:
-    print(key, data[key])
+# for keys, values in groups.items():
+#     print(keys, "drives", values)
+
+
+# print("The location of each individual in Lat-Lon is:")
+# for key in data:
+#     print(key, data[key])
