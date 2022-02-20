@@ -86,7 +86,7 @@ def update_to_driver(id):
   query = query_template.substitute(
       id=id
     )
-  print(query)
+  # print(query)
   mycursor = mydb.cursor()
   mycursor.execute(query)
   mydb.commit()
@@ -105,7 +105,7 @@ def update_to_passenger(id):
   query = query_template.substitute(
       id=id
     )
-  print(query)
+  # print(query)
   mycursor = mydb.cursor()
   mycursor.execute(query)
   mydb.commit()
