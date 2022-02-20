@@ -1,20 +1,15 @@
 import pandas as pd
 
-employees_df = pd.read_csv("employees.csv")
+employees_df = pd.read_csv("employees.csv", index_col="Employee_ID")
+group_df = pd.read_csv("carpool_groups.csv", index_col="fk_Employee_ID")
+drivers_df = pd.read_csv("driver.csv", index_col="Driver_ID")
 
-# Gets names and employee ID's of those able to drive
-drivers_df = employees_df[employees_df["Carpool_Driver"] == 0]
-drivers_dict = dict(zip(
-    drivers_df.First_Name + " " + drivers_df.Last_Name,
-    drivers_df.Address, 
-    ))
+group_drivers_df = employees_df[group_df["Group_Driver"] == 1].join(drivers_df, on="Driver_ID")
+group_drivers_df
 
-# Gets all the names and addresses of employees
-no_drivers_df = employees_df[employees_df["Carpool_Driver"] == 1]
-no_drivers_dict = dict(zip(
-    no_drivers_df.First_Name + " " + no_drivers_df.Last_Name,
-    no_drivers_df.Address,
-    ))
+print(group_drivers_df)
 
-print(drivers_dict)
-print(no_drivers_dict)
+# group_drivers_dict = dict(zip(
+#     group_drivers_df.First_Name + "_" + group_drivers_df.Last_Name,
+
+# ))
