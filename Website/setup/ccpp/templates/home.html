@@ -6,6 +6,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 <head>
+  <!-- Map import-->
     <title>Map</title>
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
@@ -14,17 +15,46 @@
       #map { position: absolute; top: 8%; bottom: 0; width: 100%; height:92%}
       </style>
   </head>
+  <!-- Navigation bar -->
   <body>
     <header class="w3-container w3-theme w3-padding" id="myHeader"> 
         <div class="w3-bar w3-black w3-card">
         <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
         <a href="" class="w3-bar-item w3-button w3-padding-large w3-light-green">HOME</a>
         <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGOUT</a>
-        <a href="" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
+        <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</button>
         </header>
     </div>  
-   <div id='map'></div>
+    <!-- Map Import-->
+   <div id='map'>
+    <!-- contact--> 
+   </div>
+   <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-light-green"> 
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-circle w3-display-topright w3-hover-red">&times;</span>
+        <h2>Light Mode Bad</h2>
+      </header>
+      <div class="w3-container w3-black">
+        <p style="font-size:160%"><b>Contact Info:</b></p>
+        <p><b>Kevin Van: </b>vankevin58@gmail.com</p>
+        <p><b>Gustavo Bravo: </b>vankevin58@gmail.com</p>
+        <p><b>Matthew Mcconnell: </b>vankevin58@gmail.com</p>
+        <p><b>Kenny Jeon: </b>vankevin58@gmail.com</p>
+        <p><b>Vanessa Chen: </b>vankevin58@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script for closing modal when clicking outside box-->
     <script>
+    var modal = document.getElementById('id01');
+    window.onclick = function(event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
+    }
+    //script for opening map
     mapboxgl.accessToken = 'pk.eyJ1Ijoia2plb243IiwiYSI6ImNrenViNThrYjA1NGgyeG15YmFxc2U0bWIifQ.lBLxKsTVlkcizINrkPTbsw';
     var map = new mapboxgl.Map({
     container: 'map',
@@ -33,6 +63,8 @@
     zoom: 11.5,
     });
     </script>
+
+    <!-- Side panels-->
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <style>
@@ -127,7 +159,7 @@
     <h1>COMPANY CARPOOL</h1>
     <h4 class="w3-animate-bottom">Welcome to our homepage</h4>
     </div>
-
+<!-- Modal box for contact info-->
     <div id="id01" class="w3-modal">
       <div class="w3-modal-content w3-card-4">
         <header class="w3-container w3-light-green"> 
@@ -145,15 +177,15 @@
       </div>
     </div>
   </div>
-  <script>
+<!-- Script for closing modal when clicking outside box-->
+<script>
   var modal = document.getElementById('id01');
   window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
+  if (event.target == modal) {
+  modal.style.display = "none";
   }
-    </script>
-
+}
+</script>
 </body>
 
 {% endif %}
