@@ -185,6 +185,29 @@ def group_to_list(group_id):
   
   return myresult
 
+def get_all_group_info():
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database="car_pool_planner"
+  )
+  mycursor = mydb.cursor()
+
+  query = "SELECT COUNT(DISTINCT Group_id) FROM carpool_groups"
+
+  mycursor.execute(query)
+  myresult = mycursor.fetchall()[0][0]
+  
+  groups_dict = {}
+
+  for i in range(0, myresult):
+    info = group_to_list(i)
+    groups_dict[i] = info
+
+  return groups_dict
+  
+
 def remove_user(id: int):
   mydb = mysql.connector.connect(
       host="localhost",
@@ -244,6 +267,6 @@ def get_info_dict ():
 
   for i in range(0, myresult):
     info = get_fname_lname_address(i)
-    all_info_dict[i] = info
+    all_info_dict[i] = info[0] + " " + info[1] + ", " + info[2]
 
   return all_info_dict
