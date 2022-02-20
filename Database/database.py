@@ -13,14 +13,10 @@ def database_to_dic():
 
   mycursor = mydb.cursor()
 
-  # mycursor.execute("SELECT * FROM employee")
-
-  # myresult = mycursor.fetchall()
-
-  employee_df = pd.read_sql("SELECT * FROM employee", con=mydb, index_col="Employee_ID")
-  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb, index_col="fk_Employee_ID")
-  driver_df = pd.read_sql("SELECT * FROM driver", con=mydb, index_col="Driver_ID")
-  company_df = pd.read_sql("SELECT * FROM company", con=mydb, index_col="Company_ID")
+  employee_df = pd.read_sql("SELECT * FROM employee", con=mydb, )
+  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb)
+  driver_df = pd.read_sql("SELECT * FROM driver", con=mydb)
+  company_df = pd.read_sql("SELECT * FROM company", con=mydb)
 
   # employee_df.to_csv("employees.csv")
   # carpool_groups_df.to_csv("carpool_groups.csv")
@@ -28,8 +24,8 @@ def database_to_dic():
   # company_df.to_csv("company.csv")
 
   # Get dictionary of those chosen to drive the groups
-  group_drivers_df = employee_df[carpool_groups_df["Group_Driver"] == 1].join(driver_df, on="Driver_ID")
-  print(group_drivers_df.head())
+  can_driver_df = employee_df[carpool_groups_df["Group_Driver"] == 1]
+  group_drivers_df = pd.merge(can_driver_df, driver_df, left_on="Employee_ID", right_on="fk_Employee_ID")
   group_drivers_dict = {}
 
   for idx, item in group_drivers_df.iterrows():
@@ -39,8 +35,7 @@ def database_to_dic():
   # Get dictionary of those who were not chosen to drive
   non_drivers_df = employee_df[carpool_groups_df["Group_Driver"] == 0]
   non_drivers_dict = dict(zip(
-      # non_drivers_df.First_Name + "_" + non_drivers_df.Last_Name,
-      non_drivers_df.Employee_ID,
+      non_drivers_df.index,
       non_drivers_df.Address + ", " + non_drivers_df.City))
   return group_drivers_dict, non_drivers_dict
 
@@ -98,27 +93,73 @@ def insert_employee_db(id, fname, lname, address, city, password, max_seats):
     #         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     # args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
     # print("args: ", args)
+    args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
+    print("args: ", args)
     mycursor = mydb.cursor()
     mycursor.execute(employee_query)
     mydb.commit()
-#     # try:
-#     #     # db_config = read_db_config()
-#     #     # conn = MySQLConnection(**db_config)
 
-#     #     mycursor = mydb.cursor()
-#     #     mycursor.execute(query, args)
+def update_to_driver(id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
 
-#     #     if mycursor.lastrowid:
-#     #         print('last insert id', mycursor.lastrowid)
-#     #     else:
-#     #         print('last insert id not found')
+  query_template = Template(
+            """UPDATE carpool_groups SET Group_Driver = 1 WHERE fk_Employee_ID = ($id)"""
+    )
+  query = query_template.substitute(
+      id=id
+    )
+  # print(query)
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+  mydb.commit()
 
-#     #     mydb.commit()
-#     # except Error as error:
-#     #     print(error)
+def update_to_passenger(id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
 
-#     # finally:
-#     #     mycursor.close()
-#     #     mydb.close()
+  query_template = Template(
+            """UPDATE carpool_groups SET Group_Driver = 0 WHERE fk_Employee_ID = ($id)"""
+    )
+  query = query_template.substitute(
+      id=id
+    )
+  # print(query)
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+  mydb.commit()
+
+def update_group_id(id, group_id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
+
+  query_template = Template(
+            """UPDATE carpool_groups SET Group_ID = ($group_id) WHERE fk_Employee_ID = ($id)"""
+    )
+  query = query_template.substitute(
+      id=id,
+      group_id = group_id
+    )
+  print(query)
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+  mydb.commit()
 
 # insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10")
+# update_to_driver(1)
+# update_to_passenger(0)
+# update_group_id(0, 0)
+data1, data2 = database_to_dic()
+print(data1, data2)
