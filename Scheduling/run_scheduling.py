@@ -1,3 +1,5 @@
+import sys
+sys.path.append(R"C:\Users\vanes\eclipse-workspace\ENSF480FinalProject\src\Hackathon_2022")
 from schedulingFinal import get_ride_order
 import sys
 from Database.database import database_to_dic
