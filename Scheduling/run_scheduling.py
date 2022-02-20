@@ -2,9 +2,9 @@ from schedulingFinal import get_ride_order
 
 import pandas as pd
 
-employees_df = pd.read_csv("employees.csv", index_col="Employee_ID")
-group_df = pd.read_csv("carpool_groups.csv", index_col="fk_Employee_ID")
-drivers_df = pd.read_csv("driver.csv", index_col="Driver_ID")
+employees_df = pd.read_csv(R"Scheduling\employees.csv", index_col="Employee_ID")
+group_df = pd.read_csv(R"Scheduling\carpool_groups.csv", index_col="fk_Employee_ID")
+drivers_df = pd.read_csv(R"Scheduling\driver.csv", index_col="Driver_ID")
 
 group_drivers_df = employees_df[group_df["Group_Driver"] == 1].join(drivers_df, on="Driver_ID")
 
@@ -20,8 +20,9 @@ non_drivers_dict = dict(zip(
     non_drivers_df.First_Name + "_" + non_drivers_df.Last_Name,
     non_drivers_df.Address + ", " + non_drivers_df.City))
 
-group_list, location_data = get_ride_order(group_drivers_dict, non_drivers_dict, workplace_data = {
-    "UniversityOfCalgary": "2500 University Dr NW, Calgary"})
+wp = {
+    "UniversityOfCalgary": "2500 University Dr NW, Calgary"}
+group_list, location_data = get_ride_order(group_drivers_dict, non_drivers_dict, wp)
 
 
 
