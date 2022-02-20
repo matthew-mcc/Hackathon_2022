@@ -16,11 +16,6 @@ def database_to_dict():
   driver_df = pd.read_sql("SELECT * FROM driver", con=mydb)
   company_df = pd.read_sql("SELECT * FROM company", con=mydb)
 
-  # employee_df.to_csv("employees.csv")
-  # carpool_groups_df.to_csv("carpool_groups.csv")
-  # driver_df.to_csv("driver.csv")
-  # company_df.to_csv("company.csv")
-
   # Get dictionary of those chosen to drive the groups
   can_driver_df = employee_df[carpool_groups_df["Group_Driver"] == 1]
   group_drivers_df = pd.merge(can_driver_df, driver_df, left_on="Employee_ID", right_on="fk_Employee_ID")
@@ -36,7 +31,6 @@ def database_to_dict():
       non_drivers_df.index,
       non_drivers_df.Address + ", " + non_drivers_df.City))
   return group_drivers_dict, non_drivers_dict
-
 
 
 def insert_employee_db(id, fname, lname, address, city, password, max_seats):
@@ -86,18 +80,12 @@ def insert_employee_db(id, fname, lname, address, city, password, max_seats):
     driver=0
   )
 
-    # query = "INSERT INTO employee(Employee_ID, First_Name, Last_Name, Address, City, Cannot_Drive, Password, " \
-    #         "Admin, Driver_ID, Passenger_Rides, Driver_Rides, Rank) " \
-    #         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    # args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
-    # print("args: ", args)
-    # args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
-    # print("args: ", args)
   mycursor = mydb.cursor()
   mycursor.execute(employee_query)
   mycursor.execute(driver_query)
   mycursor.execute(carpool_query)
   mydb.commit()
+
 
 def update_to_driver(id):
   mydb = mysql.connector.connect(
@@ -113,10 +101,10 @@ def update_to_driver(id):
   query = query_template.substitute(
       id=id
     )
-  # print(query)
   mycursor = mydb.cursor()
   mycursor.execute(query)
   mydb.commit()
+
 
 def update_to_passenger(id):
   mydb = mysql.connector.connect(
@@ -132,10 +120,10 @@ def update_to_passenger(id):
   query = query_template.substitute(
       id=id
     )
-  # print(query)
   mycursor = mydb.cursor()
   mycursor.execute(query)
   mydb.commit()
+
 
 def update_group_id(id, group_id):
   mydb = mysql.connector.connect(
@@ -152,10 +140,10 @@ def update_group_id(id, group_id):
       id=id,
       group_id = group_id
     )
-  print(query)
   mycursor = mydb.cursor()
   mycursor.execute(query)
   mydb.commit()
+
 
 def change_drivers():
   mydb = mysql.connector.connect(
@@ -164,16 +152,11 @@ def change_drivers():
   password="vanessa",
   database='car_pool_planner'
   )
-  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb, set_index="fk_Employee_ID")
+  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb, index_col="fk_Employee_ID")
   for label, item in carpool_groups_df.iterrows():
-    if item["Group_Drive"] == 1:
-      item["Group_Drive"] = 0
-      carpool_groups_df.loc[label + 1, "Group_Drive"] = 1  
-      
-
-# insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10", 6)
-# update_to_driver(1)
-# update_to_passenger(0)
-# update_group_id(0, 0)
-data1, data2 = database_to_dict()
-print(data1, data2)
+    if item["Group_Driver"] == 1:
+      update_to_passenger(label)
+      if (label < carpool_groups_df["Group_Driver"].size-1):
+        update_to_driver(label + 1)
+      else:
+        update_to_driver(0)
