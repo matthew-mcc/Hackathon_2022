@@ -1,6 +1,6 @@
+from re import TEMPLATE
 import mysql.connector
 import pandas as pd
-from mysql.connector import Error
 from string import Template
 
 def database_to_dict():
@@ -161,14 +161,14 @@ def change_drivers():
       else:
         update_to_driver(0)
 
+
 # Returns a list of first name, last name, and address of employee in group with group_id number
 def group_to_list(group_id):
   mydb = mysql.connector.connect(
       host="localhost",
       user="vanessa",
       password="vanessa",
-      database='car_pool_planner'
-    )
+      database='car_pool_planner')
   query_template = Template(
     """SELECT First_Name, Last_Name, Address FROM employee, carpool_groups WHERE carpool_groups.Group_id = ($group_id) AND carpool_groups.fk_Employee_ID = employee.Employee_ID"""
     )
@@ -181,3 +181,22 @@ def group_to_list(group_id):
   myresult = mycursor.fetchall()
   
   return myresult
+
+def remove_user(id: int):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner')
+  
+  employee_query = f"DELETE FROM employee WHERE Employee_ID={id}"
+  driver_query = f"DELETE FROM driver WHERE fk_Employee_ID={id}"
+  carpool_groups = f"DELETE FROM carpool_groups WHERE fk_Employee_ID={id}"
+
+  mycursor = mydb.cursor()
+
+  mycursor.execute(employee_query)
+  mycursor.execute(driver_query)
+  mycursor.execute(carpool_groups)
+
+  mydb.commit()
