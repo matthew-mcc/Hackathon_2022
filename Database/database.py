@@ -205,3 +205,21 @@ def remove_user(id: int):
 result = group_to_list(0)
 for x in result:
   print(x)
+
+# Returns a list with first name, last name, and address as list inputs
+def get_fname_lname_address(id: int):
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database="car_pool_planner"
+  )
+  mycursor = mydb.cursor()
+
+  query = f"SELECT First_Name, Last_Name, Address FROM employee WHERE Employee_ID={id}"
+
+  mycursor(query)
+
+  myresult = mycursor.fetchall()
+
+  fname, lname, address = myresult.split(",")
