@@ -1,6 +1,6 @@
+from re import TEMPLATE
 import mysql.connector
 import pandas as pd
-from mysql.connector import Error
 from string import Template
 
 def database_to_dict():
@@ -160,3 +160,25 @@ def change_drivers():
         update_to_driver(label + 1)
       else:
         update_to_driver(0)
+
+def remove_user(id: int):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+  )
+  # employee_query_template = TEMPLATE("DELETE FROM employee WHERE Employee_ID=$id")
+  employee_query = f"DELETE FROM employee WHERE Employee_ID={id}"
+  driver_query = f"DELETE FROM driver WHERE fk_Employee_ID={id}"
+  carpool_groups = f"DELETE FROM carpool_groups WHERE fk_Employee_ID={id}"
+
+  mycursor = mydb.cursor()
+
+  mycursor.execute(employee_query)
+  mycursor.execute(driver_query)
+  mycursor.execute(carpool_groups)
+
+  mydb.commit()
+
+  
