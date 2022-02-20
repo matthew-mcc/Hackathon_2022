@@ -1,4 +1,6 @@
+from pickle import NONE
 from django.shortcuts import render
+from django.template import loader
 
 # Create your views here.
 def default_map(request):
@@ -8,3 +10,10 @@ def default_map(request):
     mapbox_access_token = 'pk.my_mapbox_access_token'
     return render(request, 'default.html', 
                   { 'mapbox_access_token': mapbox_access_token })
+
+
+def send_data(request):
+    context = {}
+    context['somestring'] = "this is some string"
+
+    return render(request, "home.html", context)

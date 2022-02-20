@@ -63,7 +63,7 @@
     zoom: 11.5,
     });
     for(let i = 0; i < 5; i ++){
-    new mapboxgl.Marker().setLngLat([-114.051+(i/100), 51.048]).addTo(map);
+      new mapboxgl.Marker().setLngLat([-114.051+(i/100), 51.048]).addTo(map);
     }
     </script>
 
@@ -129,7 +129,11 @@
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         <a href="#">Groups</a>
-
+     
+        The names are:
+        
+        <p>{{some_string}}</p>
+      
       </div>
       
       <button class="openbtn" onclick="openNav()">View Groups</button>  
