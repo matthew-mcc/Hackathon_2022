@@ -1,0 +1,56 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <!-- NAV BAR -->
+<body>
+  <header class="w3-container w3-theme w3-padding" id="myHeader"> 
+    <div class="w3-bar w3-black w3-card">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="{% url 'home' %}" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+    <a href="" class="w3-bar-item w3-button w3-padding-large w3-hide-small w3-light-green">LOGIN</a>
+    <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</button>
+    </header>
+    </div>    
+
+<!-- LOGIN -->
+<br> <br>
+<div class="w3-container w3-content w3-round-large w3-light-green" style="max-width:400px" id="contact">
+  <h4 class="w3-wide w3-auto">LOGIN</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+  <button class="w3-button w3-block w3-black w3-round-medium" type="submit" >Log In</button>
+  <br>
+  </div>
+
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-light-green"> 
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-circle w3-display-topright w3-hover-red">&times;</span>
+        <h2>Light Mode Bad</h2>
+      </header>
+      <div class="w3-container w3-black">
+        <p style="font-size:160%"><b>Contact Info:</b></p>
+        <p><b>Kevin Van: </b>vankevin58@gmail.com</p>
+        <p><b>Gustavo Bravo: </b>vankevin58@gmail.com</p>
+        <p><b>Matthew Mcconnell: </b>vankevin58@gmail.com</p>
+        <p><b>Kenny Jeon: </b>vankevin58@gmail.com</p>
+        <p><b>Vanessa Chen: </b>vankevin58@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+<!-- Script for closing modal when clicking outside box-->
+  <script>
+    var modal = document.getElementById('id01');
+    window.onclick = function(event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
+  }
+  </script>
+
+{% endblock %}

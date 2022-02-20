@@ -1,0 +1,331 @@
+<!-- templates/home.html-->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<head>
+  <!-- Map import-->
+    <title>Map</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 8%; bottom: 0; width: 100%; height:92%}
+      </style>
+  </head>
+  <!-- Navigation bar -->
+  <style>
+    .mapboxgl-popup{
+      width: 10%;
+    }
+  </style>
+  <body>
+    <header class="w3-container w3-theme w3-padding" id="myHeader"> 
+        <div class="w3-bar w3-black w3-card">
+        <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+        <a href="" class="w3-bar-item w3-button w3-padding-large w3-light-green">HOME</a>
+        <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGOUT</a>
+        <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</button>
+        </header>
+    </div>  
+    <!-- Map Import-->
+   <div id='map'>
+    <!-- contact--> 
+   </div>
+   <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-light-green"> 
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-circle w3-display-topright w3-hover-red">&times;</span>
+        <h2>Light Mode Bad</h2>
+      </header>
+      <div class="w3-container w3-black">
+        <p style="font-size:160%"><b>Contact Info:</b></p>
+        <p><b>Kevin Van: </b>vankevin58@gmail.com</p>
+        <p><b>Gustavo Bravo: </b>vankevin58@gmail.com</p>
+        <p><b>Matthew Mcconnell: </b>vankevin58@gmail.com</p>
+        <p><b>Kenny Jeon: </b>vankevin58@gmail.com</p>
+        <p><b>Vanessa Chen: </b>vankevin58@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script for closing modal when clicking outside box-->
+    <script>
+    var modal = document.getElementById('id01');
+    window.onclick = function(event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
+    }
+    //script for opening map
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2plb243IiwiYSI6ImNrenViNThrYjA1NGgyeG15YmFxc2U0bWIifQ.lBLxKsTVlkcizINrkPTbsw';
+    var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v10',
+    center: [-114.051722, 51.048886, ],
+    zoom: 11.5,
+    });
+   
+    //var my_list = {{test_list}};
+    // var my_dict = {{test_list}};
+    // window.alert(my_dict);
+
+    names = {{test_dict|safe}};
+    for(const ele in names){
+     // new mapboxgl.Marker().setLngLat([names[ele][1], names[ele][0]]).addTo(map);
+    }
+    const colors = ['#FF33E0', '#FFAE33', '#338EFF', '#FFFFFF'];
+    var my_list = {{test_group|safe}};
+    var tag_data = {{tag_value|safe}};
+   // window.alert(tag_data[0]);
+
+
+
+    //making company marker
+    const popup = new mapboxgl.Popup({offest:25}).setText('Company Destination!');
+    new mapboxgl.Marker({"color":'#00FFA8', 'scale':1.5})
+    .setLngLat([-114.14069500180989,51.07771210980663])
+    .setPopup(popup)
+    .addTo(map);
+    i = 0;
+    for(const ele in my_list){
+      //window.alert(ele);
+      
+
+      //ele = driver num
+      //
+     
+      tag = tag_data[ele];
+      
+      current_color = colors[i];
+     const popup = new mapboxgl.Popup({offest:25}).setText(tag);
+     new mapboxgl.Marker({"color":current_color, "scale": 1.2})
+     .setLngLat([names[ele][1], names[ele][0]])
+    .setPopup(popup)
+     .addTo(map);
+     i = i + 1; //creates drivers
+      for(const ele2 in my_list[ele]){
+        //ele2 = passenger num in tup
+        //window.alert(names[ele2]);
+        //x, y = names[ele2]
+
+        
+
+        
+        current_passenger_id = my_list[ele][ele2];
+        const popup = new mapboxgl.Popup({offest:25}).setText(tag_data[current_passenger_id]);
+        new mapboxgl.Marker({"color":current_color})
+        .setLngLat([names[current_passenger_id][1], names[current_passenger_id][0]])
+        .setPopup(popup)
+        .addTo(map);
+        //window.alert(my_list[ele][ele2]);
+      }
+      
+      
+    }  
+
+    // for(let i = 0; i < my_list.length; i ++){
+    //   new mapboxgl.Marker().setLngLat([my_list[i][1], my_list[i][0]]).addTo(map);
+    // }
+    //   new mapboxgl.Marker().setLngLat([-114.051+(i/100), 51.048]).addTo(map);
+    // }
+    </script>
+
+    <!-- Side panels-->
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+      body {
+        font-family: "Lato", sans-serif;
+      }
+      
+      .sidepanel  {
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        height: 50%;
+        top: 10;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
+      
+      .sidepanel a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+      }
+      
+      .sidepanel a:hover {
+        color: #f1f1f1;
+      }
+      
+      .sidepanel .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+      }
+      
+      .openbtn {
+        float: left;
+        position: relative;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 10px 15px;
+        border: none;
+      }
+      
+      .openbtn:hover {
+        background-color:#444;
+      }
+
+      .refbutton{
+        float: right;
+        position: relative;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 10px 15px;
+        border: none;
+      }
+
+      </style>
+      </head>
+        <body>
+        <div>
+        <form method = "post">
+          {% csrf_token %}
+        <button type = "submit" id="refresh" class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge"></i></button>
+      </form>
+
+      </div>
+      <div id="mySidepanel" class="sidepanel">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        
+        <script>
+          var group_info = {{group_info|safe}};
+          i = 0;
+          var members = ""
+          for(const group in group_info){
+            //group is id 
+          //    console.log(group_info[group]);
+          members =members + "Group " + i + "<br />";
+          i = i+1;
+          console.log("outer");
+            for(const attr in group_info[group]){
+              person = (group_info[group][attr]);
+              if(person[3]==1){
+                console.log('driver');
+                members = members + "DRIVER <br/>";
+                members = members + person + "<br/>";
+                console.log(person);
+
+              } else {
+              console.log(person);
+              members = members + "PASSENGER<br/>";
+              members = members + person + "<br/>";
+              //console.log(attr);
+              //console.log(group_info[group][attr]);
+              }
+            }
+          }
+          document.getElementById('mySidepanel').innerHTML = "<span style='color: white;'>"+ members;
+        </script>
+      
+      </div>
+      
+      <button class="openbtn w3-button w3-black" onclick="openNav()">View Groups</button>  
+      
+      <script>
+
+      function openNav() {
+        document.getElementById("mySidepanel").style.width = "250px";
+      }
+      
+      function closeNav() {
+        document.getElementById("mySidepanel").style.width = "0";
+      }
+      </script>
+      </body>
+  </body>
+{% else %}
+
+<style>
+  div.mainbox {
+  max-width: 65%;
+  margin: auto;
+}
+</style>
+<body>
+    <header class="w3-container w3-theme w3-padding" id="myHeader"> 
+    <div class="w3-bar w3-black w3-card">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="" class="w3-bar-item w3-button w3-padding-large w3-light-green">HOME</a>
+    <a href="{% url 'login' %}" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGIN</a>
+    <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</button>
+    </header>
+    </div>    
+<!-- Modal box for contact info-->
+<div id="id01" class="w3-modal">
+  <div class="w3-modal-content w3-card-4">
+    <header class="w3-container w3-light-green"> 
+      <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-circle w3-display-topright w3-hover-red">&times;</span>
+      <h2>Light Mode Bad</h2>
+    </header>
+    <div class="w3-container w3-black">
+      <p style="font-size:160%"><b>Contact Info:</b></p>
+      <p><b>Kevin Van: </b>vankevin58@gmail.com</p>
+      <p><b>Gustavo Bravo: </b>vankevin58@gmail.com</p>
+      <p><b>Matthew Mcconnell: </b>vankevin58@gmail.com</p>
+      <p><b>Kenny Jeon: </b>vankevin58@gmail.com</p>
+      <p><b>Vanessa Chen: </b>vankevin58@gmail.com</p>
+    </div>
+  </div>
+</div>
+<!-- Spaces-->
+<br>
+<br>
+<br>
+
+  <div class="mainbox"> 
+    <div class="w3-card-4 w3-animate-bottom" >
+      <header class="w3-container w3-light-green"> 
+          <div class="w3-center w3-xxxlarge w3-bold">
+          <h1>GO-GO ECO!</h1>
+          </div>
+      </header>
+      <div class="w3-container w3-black">
+      <div class="w3-black w3-card-4">
+      <p>This website is utilized to organize car pool parties among coworkers within the same company. 
+        Our idea is to minimize carbon emissions by encouraging the use of shared modes 
+        of transporation. The concept is to have companies deploy our developed tool to their employees
+        that are commuting to the same workplace destination. We determined this was a safe method of
+        transport as employees are typically screened before employment and serves as a fun way to
+        meet others on the way to work.
+        <br/>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Script for closing modal when clicking outside box-->
+<script>
+  var modal = document.getElementById('id01');
+  window.onclick = function(event) {
+  if (event.target == modal) {
+  modal.style.display = "none";
+  }
+}
+</script>
+</body>
+
+{% endif %}
+{% endblock %}
+
