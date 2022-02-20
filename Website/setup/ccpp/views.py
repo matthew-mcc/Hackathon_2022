@@ -4,16 +4,12 @@ from django.template import loader
 
 def geeks_view(request):
     # create a dictionary
-    context = {
-        "first_name" : "Naveen",
-        "last_name"  : "Arora",
-    }
-    # return response
-    return render(request, "home.html", context)
-
-
-def send_data(request):
     context = {}
-    context['somestring'] = "this is some string"
-
+    mylist = [] 
+    mylist.append("hello")
+    mylist.append("my")
+    mylist.append("name")
+    mylist.append("is Ken")
+    context['my_list'] = mylist
+    # return response
     return render(request, "home.html", context)
