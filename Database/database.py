@@ -11,9 +11,7 @@ def database_to_dic():
     database='car_pool_planner'
   )
 
-  mycursor = mydb.cursor()
-
-  employee_df = pd.read_sql("SELECT * FROM employee", con=mydb, )
+  employee_df = pd.read_sql("SELECT * FROM employee", con=mydb)
   carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb)
   driver_df = pd.read_sql("SELECT * FROM driver", con=mydb)
   company_df = pd.read_sql("SELECT * FROM company", con=mydb)
@@ -158,6 +156,20 @@ def update_group_id(id, group_id):
   mycursor = mydb.cursor()
   mycursor.execute(query)
   mydb.commit()
+
+def change_drivers():
+  mydb = mysql.connector.connect(
+  host="localhost",
+  user="vanessa",
+  password="vanessa",
+  database='car_pool_planner'
+  )
+  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb)
+  for label, item in carpool_groups_df.iterrows:
+    # if items["Group_Drive"] == 1:
+    #   items["Group_Drive"] = 0
+    print(label, item)
+      
 
 # insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10", 6)
 # update_to_driver(1)
