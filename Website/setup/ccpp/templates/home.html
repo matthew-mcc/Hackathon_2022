@@ -16,6 +16,11 @@
       </style>
   </head>
   <!-- Navigation bar -->
+  <style>
+    .mapboxgl-popup{
+      width: 10%;
+    }
+  </style>
   <body>
     <header class="w3-container w3-theme w3-padding" id="myHeader"> 
         <div class="w3-bar w3-black w3-card">
@@ -77,7 +82,11 @@
 
 
     //making company marker
-    new mapboxgl.Marker({"color":'#00FFA8', 'scale':1.5}).setLngLat([-114.14069500180989,51.07771210980663]).addTo(map);
+    const popup = new mapboxgl.Popup({offest:25}).setText('test');
+    new mapboxgl.Marker({"color":'#00FFA8', 'scale':1.5})
+    .setLngLat([-114.14069500180989,51.07771210980663])
+    .setPopup(popup)
+    .addTo(map);
     i = 0;
     for(const ele in my_list){
       //window.alert(ele);
@@ -85,7 +94,11 @@
       //ele = driver num
       //
       current_color = colors[i];
-     new mapboxgl.Marker({"color":current_color, "scale": 1.2}).setLngLat([names[ele][1], names[ele][0]]).addTo(map);
+     const popup = new mapboxgl.Popup({offest:25}).setText('test');
+     new mapboxgl.Marker({"color":current_color, "scale": 1.2})
+     .setLngLat([names[ele][1], names[ele][0]])
+    .setPopup(popup)
+     .addTo(map);
      i = i + 1; //creates drivers
       for(const ele2 in my_list[ele]){
         //ele2 = passenger num in tup
@@ -95,7 +108,11 @@
         
         
         current_passenger_id = my_list[ele][ele2];
-        new mapboxgl.Marker({"color":current_color}).setLngLat([names[current_passenger_id][1], names[current_passenger_id][0]]).addTo(map);
+        const popup = new mapboxgl.Popup({offest:25}).setText('test');
+        new mapboxgl.Marker({"color":current_color})
+        .setLngLat([names[current_passenger_id][1], names[current_passenger_id][0]])
+        .setPopup(popup)
+        .addTo(map);
         //window.alert(my_list[ele][ele2]);
       }
       
