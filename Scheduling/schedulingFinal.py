@@ -182,5 +182,11 @@ workplace_data = {
 
 groups, data = get_ride_order(driver_data, passenger_data, workplace_data)
 
-print("groups:", groups)
-print("location data", data)
+
+for keys, values in groups.items():
+    print(keys, "drives", values)
+
+
+print("The location of each individual in Lat-Lon is:")
+for key in data:
+    print(key, data[key])
