@@ -112,6 +112,7 @@
         //x, y = names[ele2]
 
         
+
         
         current_passenger_id = my_list[ele][ele2];
         const popup = new mapboxgl.Popup({offest:25}).setText(tag_data[current_passenger_id]);
@@ -205,6 +206,26 @@
 
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <script>
+          var group_info = {{group_info|safe}};
+          for(const group in group_info){
+            //group is id 
+          //    console.log(group_info[group]);
+          console.log("outer");
+            for(const attr in group_info[group]){
+              person = (group_info[group][attr]);
+              if(person[3]==1){
+                console.log('driver');
+                console.log(person);
+
+              }
+              console.log(person);
+              //console.log(attr);
+              //console.log(group_info[group][attr]);
+              
+            }
+          }
+        </script>
         <a href="#">Groups</a>
       
       </div>
