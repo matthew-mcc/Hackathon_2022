@@ -42,62 +42,64 @@ def database_to_dic():
 
 
 def insert_employee_db(id, fname, lname, address, city, password, max_seats):
-    mydb = mysql.connector.connect(
-      host="localhost",
-      user="vanessa",
-      password="vanessa",
-      database='car_pool_planner'
-    )
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database='car_pool_planner'
+  )
 
-    # Employee Table Query
-    employee_query_template = Template(
-            """INSERT INTO employee
-            VALUES($id, \"$fname\", \"$lname\", \"$address\", \"$city\", $drive, \"$password\", $admin, $driver_id, $rides, $drives, $rank)"""
-    )
-    employee_query = employee_query_template.substitute(
-      id=id,
-      fname=fname,
-      lname=lname,
-      address=address,
-      city=city,
-      password=password,
-      admin=0,
-      rides=0,
-      drives=0,
-      rank=0)
+  # Employee Table Query
+  employee_query_template = Template(
+          """INSERT INTO employee
+          VALUES($id, \"$fname\", \"$lname\", \"$address\", \"$city\", \"$password\", $admin, $rides, $drives, $rank)"""
+  )
+  employee_query = employee_query_template.substitute(
+    id=id,
+    fname=fname,
+    lname=lname,
+    address=address,
+    city=city,
+    password=password,
+    admin=0,
+    rides=0,
+    drives=0,
+    rank=0)
 
-    # Driver Query
-    driver_query_template = Template(
-            """INSERT INTO driver
-            VALUES($id, $max_seats, $max_distance_km"""
-    )
-    driver_query = driver_query_template.substitute(
-      id=id,
-      max_seats=max_seats,
-      max_distance_km=10
-    )
+  # Driver Query
+  driver_query_template = Template(
+          """INSERT INTO driver
+          VALUES($id, $max_seats, $max_distance_km"""
+  )
+  driver_query = driver_query_template.substitute(
+    id=id,
+    max_seats=max_seats,
+    max_distance_km=10
+  )
 
-    # Carpool Query
-    carpool_query_template = Template(
-              """INSERT INTO carpool_groups
-              VALUES($id, $groupID, $driver"""
-    )
-    carpool_query = carpool_query_template.substitute(
-      id=id,
-      max_seats=max_seats,
-      driver=0
-    )
+  # Carpool Query
+  carpool_query_template = Template(
+            """INSERT INTO carpool_groups
+            VALUES($id, $groupID, $driver"""
+  )
+  carpool_query = carpool_query_template.substitute(
+    id=id,
+    max_seats=max_seats,
+    driver=0
+  )
 
     # query = "INSERT INTO employee(Employee_ID, First_Name, Last_Name, Address, City, Cannot_Drive, Password, " \
     #         "Admin, Driver_ID, Passenger_Rides, Driver_Rides, Rank) " \
     #         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     # args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
     # print("args: ", args)
-    args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
-    print("args: ", args)
-    mycursor = mydb.cursor()
-    mycursor.execute(employee_query)
-    mydb.commit()
+    # args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
+    # print("args: ", args)
+  mycursor = mydb.cursor()
+  mycursor.execute(employee_query)
+  mycursor.execute(driver_query)
+  mycursor.execute(carpool_query)
+  mydb.commit()
 
 def update_to_driver(id):
   mydb = mysql.connector.connect(
