@@ -164,16 +164,16 @@ def change_drivers():
   password="vanessa",
   database='car_pool_planner'
   )
-  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb)
-  for label, item in carpool_groups_df.iterrows:
-    # if items["Group_Drive"] == 1:
-    #   items["Group_Drive"] = 0
-    print(label, item)
+  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb, set_index="fk_Employee_ID")
+  for label, item in carpool_groups_df.iterrows():
+    if item["Group_Drive"] == 1:
+      item["Group_Drive"] = 0
+      carpool_groups_df.loc[label + 1, "Group_Drive"] = 1  
       
 
 # insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10", 6)
 # update_to_driver(1)
 # update_to_passenger(0)
 # update_group_id(0, 0)
-data1, data2 = database_to_dic()
+data1, data2 = database_to_dict()
 print(data1, data2)
