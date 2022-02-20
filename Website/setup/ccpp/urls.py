@@ -17,15 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from django.views.generic.base import TemplateView
-from ccpp import views
 
-
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')), # new
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('test_data/', views.test_data)
+    # path('admin/', admin.site.urls),
+    # path('accounts/', include('django.contrib.auth.urls')), # new
+    # path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('test_data', views.test_data)
     
     
 ]
