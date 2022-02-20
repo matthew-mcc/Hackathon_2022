@@ -1,8 +1,12 @@
+from cmath import inf
+from distutils.log import info
+from re import TEMPLATE
+from tokenize import group
 import mysql.connector
 import pandas as pd
-from mysql.connector import Error
+from string import Template
 
-def database_to_dic():
+def database_to_dict():
   mydb = mysql.connector.connect(
     host="localhost",
     user="vanessa",
@@ -10,66 +14,259 @@ def database_to_dic():
     database='car_pool_planner'
   )
 
-  mycursor = mydb.cursor()
-
-  mycursor.execute("SELECT * FROM employee")
-
-  myresult = mycursor.fetchall()
-
-  employee_df = pd.read_sql("SELECT * FROM employee", con=mydb, index_col="Employee_ID")
-  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb, index_col="fk_Employee_ID")
-  driver_df = pd.read_sql("SELECT * FROM driver", con=mydb, index_col="Driver_ID")
-  company_df = pd.read_sql("SELECT * FROM company", con=mydb, index_col="Company_ID")
+  employee_df = pd.read_sql("SELECT * FROM employee", con=mydb)
+  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb)
+  driver_df = pd.read_sql("SELECT * FROM driver", con=mydb)
+  company_df = pd.read_sql("SELECT * FROM company", con=mydb)
 
   # Get dictionary of those chosen to drive the groups
-  group_drivers_df = employee_df[carpool_groups_df["Group_Driver"] == 1].join(driver_df, on="Driver_ID")
-  print(group_drivers_df.head())
+  can_driver_df = employee_df[carpool_groups_df["Group_Driver"] == 1]
+  group_drivers_df = pd.merge(can_driver_df, driver_df, left_on="Employee_ID", right_on="fk_Employee_ID")
   group_drivers_dict = {}
 
   for idx, item in group_drivers_df.iterrows():
       address_and_max_seats = (item["Address"] + ", " + item["City"], item["Max_Seats"])
-      full_name = item["First_Name"] + "_" + item["Last_Name"]
-      group_drivers_dict[full_name] = address_and_max_seats
+      group_drivers_dict[item["Employee_ID"]] = address_and_max_seats
 
   # Get dictionary of those who were not chosen to drive
   non_drivers_df = employee_df[carpool_groups_df["Group_Driver"] == 0]
   non_drivers_dict = dict(zip(
-      non_drivers_df.First_Name + "_" + non_drivers_df.Last_Name,
+      non_drivers_df.index,
       non_drivers_df.Address + ", " + non_drivers_df.City))
   return group_drivers_dict, non_drivers_dict
-# employee_df.to_csv("employees.csv")
-# carpool_groups_df.to_csv("carpool_groups.csv")
-# driver_df.to_csv("driver.csv")
-# company_df.to_csv("company.csv")
 
 
-# def insert_employee_db(id, fname, lname, address, city, password):
-#     query = "INSERT INTO employee(Employee_ID, First_Name, Last_Name, Address, City, Cannot_Drive, Password, " \
-#             "Admin, Driver_ID, Passenger_Rides, Driver_Rides, Rank) " \
-#             "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-#     args = (id, fname, lname, address, city, 0, password, 0, 8, 0, 0, 0)
-#     print("args: ", args)
-#     mycursor = mydb.cursor()
-#     mycursor.execute(query, args)
-#     mydb.commit()
-#     # try:
-#     #     # db_config = read_db_config()
-#     #     # conn = MySQLConnection(**db_config)
+def insert_employee_db(id, fname, lname, address, city, password, max_seats):
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database='car_pool_planner'
+  )
 
-#     #     mycursor = mydb.cursor()
-#     #     mycursor.execute(query, args)
+  # Employee Table Query
+  employee_query_template = Template(
+          """INSERT INTO employee
+          VALUES($id, \"$fname\", \"$lname\", \"$address\", \"$city\", \"$password\", $admin, $rides, $drives)"""
+  )
+  employee_query = employee_query_template.substitute(
+    id=id,
+    fname=fname,
+    lname=lname,
+    address=address,
+    city=city,
+    password=password,
+    admin=0,
+    rides=0,
+    drives=0
+    )
 
-#     #     if mycursor.lastrowid:
-#     #         print('last insert id', mycursor.lastrowid)
-#     #     else:
-#     #         print('last insert id not found')
+  # Driver Query
+  driver_query_template = Template(
+          """INSERT INTO driver
+          VALUES($id, $max_seats, $max_distance_km)"""
+  )
+  driver_query = driver_query_template.substitute(
+    id=id,
+    max_seats=max_seats,
+    max_distance_km=10
+  )
 
-#     #     mydb.commit()
-#     # except Error as error:
-#     #     print(error)
+  # Carpool Query
+  carpool_query_template = Template(
+            """INSERT INTO carpool_groups
+            VALUES($group_id, $id, $driver)"""
+  )
+  carpool_query = carpool_query_template.substitute(
+    group_id=0,
+    id=id,
+    driver=0
+  )
 
-#     # finally:
-#     #     mycursor.close()
-#     #     mydb.close()
+  mycursor = mydb.cursor()
+  mycursor.execute(employee_query)
+  mycursor.execute(driver_query)
+  mycursor.execute(carpool_query)
+  mydb.commit()
 
-# insert_employee_db(10, "Max", "Brown", "131 Christie Knoll Point SW", "Calgary", "password10")
+
+def update_to_driver(id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
+
+  query_template = Template(
+            """UPDATE carpool_groups SET Group_Driver = 1 WHERE fk_Employee_ID = ($id)"""
+    )
+  query = query_template.substitute(
+      id=id
+    )
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+  mydb.commit()
+
+
+def update_to_passenger(id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
+
+  query_template = Template(
+            """UPDATE carpool_groups SET Group_Driver = 0 WHERE fk_Employee_ID = ($id)"""
+    )
+  query = query_template.substitute(
+      id=id
+    )
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+  mydb.commit()
+
+
+def update_group_id(id, group_id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner'
+    )
+
+  query_template = Template(
+            """UPDATE carpool_groups SET Group_ID = ($group_id) WHERE fk_Employee_ID = ($id)"""
+    )
+  query = query_template.substitute(
+      id=id,
+      group_id = group_id
+    )
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+  mydb.commit()
+
+
+def change_drivers():
+  mydb = mysql.connector.connect(
+  host="localhost",
+  user="vanessa",
+  password="vanessa",
+  database='car_pool_planner'
+  )
+  carpool_groups_df = pd.read_sql("SELECT * FROM carpool_groups", con=mydb, index_col="fk_Employee_ID")
+  for label, item in carpool_groups_df.iterrows():
+    if item["Group_Driver"] == 1:
+      update_to_passenger(label)
+      if (label < carpool_groups_df["Group_Driver"].size-1):
+        update_to_driver(label + 1)
+      else:
+        update_to_driver(0)
+
+
+# Returns a list of first name, last name, and address of employee in group with group_id number
+def group_to_list(group_id):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner')
+  query_template = Template(
+    """SELECT First_Name, Last_Name, Address, Group_Driver FROM employee, carpool_groups WHERE carpool_groups.Group_id = ($group_id) AND carpool_groups.fk_Employee_ID = employee.Employee_ID"""
+    )
+  query = query_template.substitute(
+      group_id = group_id
+    )
+  mycursor = mydb.cursor()
+  mycursor.execute(query)
+
+  myresult = mycursor.fetchall()
+  
+  return myresult
+
+def get_all_group_info():
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database="car_pool_planner"
+  )
+  mycursor = mydb.cursor()
+
+  query = "SELECT COUNT(DISTINCT Group_id) FROM carpool_groups"
+
+  mycursor.execute(query)
+  myresult = mycursor.fetchall()[0][0]
+  
+  groups_dict = {}
+
+  for i in range(0, myresult):
+    info = group_to_list(i)
+    groups_dict[i] = info
+
+  return groups_dict
+  
+
+def remove_user(id: int):
+  mydb = mysql.connector.connect(
+      host="localhost",
+      user="vanessa",
+      password="vanessa",
+      database='car_pool_planner')
+  
+  employee_query = f"DELETE FROM employee WHERE Employee_ID={id}"
+  driver_query = f"DELETE FROM driver WHERE fk_Employee_ID={id}"
+  carpool_groups = f"DELETE FROM carpool_groups WHERE fk_Employee_ID={id}"
+
+  mycursor = mydb.cursor()
+
+  mycursor.execute(employee_query)
+  mycursor.execute(driver_query)
+  mycursor.execute(carpool_groups)
+
+  mydb.commit()
+
+# Returns a list with first name, last name, and address as list inputs
+def get_fname_lname_address(id: int):
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database="car_pool_planner"
+  )
+  mycursor = mydb.cursor()
+
+  query = f"SELECT First_Name, Last_Name, Address FROM employee WHERE Employee_ID={id}"
+
+  mycursor.execute(query)
+
+  myresult = mycursor.fetchall()
+
+  fname = myresult[0][0]
+  lname = myresult[0][1]
+  address = myresult[0][2]
+
+  return fname, lname, address
+
+def get_info_dict ():
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="vanessa",
+    password="vanessa",
+    database="car_pool_planner"
+  )
+  mycursor = mydb.cursor()
+
+  query = "SELECT COUNT(*) FROM employee"
+
+  mycursor.execute(query)
+  myresult = mycursor.fetchall()[0][0]
+
+  all_info_dict = {}
+
+  for i in range(0, myresult):
+    info = get_fname_lname_address(i)
+    all_info_dict[i] = info[0] + " " + info[1] + ", " + info[2]
+
+  return all_info_dict
