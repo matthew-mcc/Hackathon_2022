@@ -21,8 +21,8 @@ driver_df = pd.read_sql("SELECT * FROM driver", con=mydb, index_col="Driver_ID")
 company_df = pd.read_sql("SELECT * FROM company", con=mydb, index_col="Company_ID")
 
 # Get dictionary of those chosen to drive the groups
-group_drivers_df = employee_df[carpool_groups_df["Group_Driver"] == 1].join(carpool_groups_df, on="Driver_ID")
-
+group_drivers_df = employee_df[carpool_groups_df["Group_Driver"] == 1].join(driver_df, on="Driver_ID")
+print(group_drivers_df.head())
 group_drivers_dict = {}
 
 for idx, item in group_drivers_df.iterrows():
