@@ -218,4 +218,8 @@ def get_fname_lname_address(id: int):
 
   myresult = mycursor.fetchall()
 
-  fname, lname, address = myresult.split(",")
+  fname = myresult[0]
+  lname = myresult[1]
+  address = myresult[2]
+
+  return fname, lname, address
