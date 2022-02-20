@@ -26,7 +26,7 @@ group_list, location_data = get_ride_order(group_drivers_dict, non_drivers_dict,
 
 
 
-for keys, values in groups_list.items():
+for keys, values in group_list.items():
     print(keys, "drives", values)
 
 
