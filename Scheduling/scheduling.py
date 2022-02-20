@@ -10,7 +10,7 @@ input_data = {
     "Tus": "25 Wentworth Terrace SW, Calgary"
 }
 
-def get_ride_order(input_data):
+def get_ride_order(input_dataDriver, input_dataPassengers, workplaceLocation):
     # converting data to lat-lon
     from geopy.geocoders import Nominatim
     import geopy.distance
