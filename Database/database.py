@@ -29,10 +29,7 @@ def database_to_dic():
 
   # Get dictionary of those chosen to drive the groups
   can_driver_df = employee_df[carpool_groups_df["Group_Driver"] == 1]
-  print(can_driver_df.head())
-  print(driver_df)
   group_drivers_df = pd.merge(can_driver_df, driver_df, left_on="Employee_ID", right_on="fk_Employee_ID")
-  print(group_drivers_df.head())
   group_drivers_dict = {}
 
   for idx, item in group_drivers_df.iterrows():
