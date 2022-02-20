@@ -203,30 +203,39 @@
           {% csrf_token %} 
         <button id="refresh" class="refbutton w3-light-green w3-button"><i class="fa fa-refresh w3-spin w3-xlarge"></i></button>
         </form> 
-
+        
       <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        
         <script>
           var group_info = {{group_info|safe}};
+          i = 0;
+          var members = ""
           for(const group in group_info){
             //group is id 
           //    console.log(group_info[group]);
+          members =members + "Group " + i + "<br />";
+          i = i+1;
           console.log("outer");
             for(const attr in group_info[group]){
               person = (group_info[group][attr]);
               if(person[3]==1){
                 console.log('driver');
+                members = members + "DRIVER <br/>";
+                members = members + person + "<br/>";
                 console.log(person);
 
-              }
+              } else {
               console.log(person);
+              members = members + "PASSENGER<br/>";
+              members = members + person + "<br/>";
               //console.log(attr);
               //console.log(group_info[group][attr]);
-              
+              }
             }
           }
+          document.getElementById('mySidepanel').innerHTML = "<span style='color: white;'>"+ members;
         </script>
-        <a href="#">Groups</a>
       
       </div>
       
