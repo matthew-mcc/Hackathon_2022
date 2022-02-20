@@ -3,7 +3,7 @@ import pandas as pd
 from mysql.connector import Error
 from string import Template
 
-def database_to_dic():
+def database_to_dict():
   mydb = mysql.connector.connect(
     host="localhost",
     user="vanessa",
